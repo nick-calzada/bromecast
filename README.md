@@ -9,16 +9,18 @@ bromecast
 │   ├── bioclim_and_other/                # Bioclimatic and auxiliary data
 │   │   ├── chelsav2/                     # Contains CHELSA V2 climate data. Can be found here: https://chelsa-climate.org/bioclim/
 │   │   ├── 307tips.csv
-│   │   ├── BRTE_chr_bp.txt
+│   │   ├── BRTE_chr_bp.txt               # Chromosome lengths
 │   │   ├── BRTEcg_genotypesCode.csv
 │   │   ├── BRTEclim.csv
 │   │   ├── BioclimateOfOrigin_AllGenotypes.csv
 │   │   ├── BromecastSites.csv
 │   │   └── assigned_genotypes.csv
-│   ├── snps/                             # SNP-related files
+│   ├── snps/                           
+│   │   ├── BRTE307_LDfilteredSNPS.bed  # Linkage-disequilibrium filtered SNP data of samples in both native and invaded ranges. 
+│   │   ├── BRTEcg_SNPs.bed             # Linkage disequilibrium filtered SNP data of common garden samples
 │   │   ├── aug_invaded_Z_and_D.RData
 │   │   └── invaded_Z_and_D.RData
-│   └── processing_scripts/              # Scripts for preparing data
+│   └── processing_scripts/              
 │       ├── invaded_range_bioclim_data_equal_dist.R
 │       ├── make_invaded_Z_and_D.R
 │       ├── make_invaded_augmented_Z_and_D.R
