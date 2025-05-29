@@ -16,8 +16,8 @@ bromecast
 │   │   ├── BromecastSites.csv
 │   │   └── assigned_genotypes.csv
 │   ├── snps/                           
-│   │   ├── BRTE307_LDfilteredSNPS.bed  # Linkage-disequilibrium filtered SNP data of samples in both native and invaded ranges. 
-│   │   ├── BRTEcg_SNPs.bed             # Linkage disequilibrium filtered SNP data of common garden samples
+│   │   ├── BRTE307_LDfilteredSNPS.bed  # Linkage disequilibrium-filtered SNP data of samples in both native and invaded ranges. 
+│   │   ├── BRTEcg_SNPs.bed             # Linkage disequilibrium-filtered SNP data of common garden samples
 │   │   ├── aug_invaded_Z_and_D.RData
 │   │   └── invaded_Z_and_D.RData
 │   └── processing_scripts/              
