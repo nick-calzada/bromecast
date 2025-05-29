@@ -9,7 +9,7 @@ data("state_boundaries_wgs84")
 north_america <- map_data("world", region = c("USA", "Canada", "Mexico"))
 
 ### 1. Read in reference genotype locations ------------------------------------
-ref_genos <- read.csv('gardens/deriveddata/BioclimateOfOrigin_AllGenotypes.csv') %>%
+ref_genos <- read.csv(here('01_data', 'data', 'bioclim_and_other','BioclimateOfOrigin_AllGenotypes.csv')) %>%
   mutate(type = 'Reference Genotype Location') %>%
   st_as_sf(., coords = c("lon", "lat"), crs = 4326) %>%
   dplyr::mutate(
@@ -48,7 +48,7 @@ joined_sat_sites <- rbind(prelim_sat_sites, bromecast_sites) %>%
   distinct(site) 
 
 ### 2. Load in satellite site locations ----------------------------------------
-sat_sites <- read.csv('satellites/rawdata/BromecastSites.csv') %>% 
+sat_sites <- read.csv('https://raw.githubusercontent.com/pbadler/bromecast-data/refs/heads/main/satellites/rawdata/BromecastSites.csv') %>% 
   rename(lon = Longitude..decimal.degrees., lat = Latitude..decimal.degrees.) %>%
   st_as_sf(., coords = c("lon", "lat"), crs = 4326) %>%
   dplyr::mutate(
@@ -59,7 +59,7 @@ sat_sites <- read.csv('satellites/rawdata/BromecastSites.csv') %>%
   dplyr::select(Site.code, latitude, longitude, type)
 
 ### 3. Read in common garden locations -----------------------------------------
-comm_gardens <- read.csv('gardens/rawdata/garden_info.csv') %>%
+comm_gardens <- read.csv('https://raw.githubusercontent.com/pbadler/bromecast-data/refs/heads/main/gardens/rawdata/garden_info.csv') %>%
   mutate(type = 'Common Garden') %>%
   st_as_sf(.,
            coords = c("garden_lon", "garden_lat"),
@@ -68,7 +68,6 @@ comm_gardens <- read.csv('gardens/rawdata/garden_info.csv') %>%
     longitude = sf::st_coordinates(.)[, 1],
     latitude = sf::st_coordinates(.)[, 2]
   )
-
 
 ################################################################################
 ## JOINT PLOT  -----------------------------------------------------------------
@@ -79,14 +78,14 @@ p <-
   geom_polygon(data = north_america, aes(x = long, y = lat, group = group), fill = 'white', color = 'black') +
   geom_sf(data = state_boundaries_wgs84, fill = NA, color = 'black', linewidth = 0.4) +
   geom_point(data = comm_gardens, aes(x = longitude, y = latitude, fill = type, shape = garden_name), 
-             color = 'blue', size = 5, alpha = 0.6) + # common garden sites
+             color = 'blue', size = 6, alpha = 0.6) + # common garden sites
   geom_point(data = ref_genos, aes(x = longitude, y = latitude, fill = type),  # reference genotype sites
              shape = 21, color = 'black', size = 3, alpha = 0.7) + 
   geom_point(data = sat_sites, aes(x = longitude, y = latitude, fill = type), # satellite sites
              shape = 21, color = 'black', size = 3, alpha = 0.7) +
   scale_shape_manual(values = c(21, 22, 23, 24)) + # Use unique shapes for `garden_name`
   scale_fill_manual(values = c("#00AFBB", "#E7B800", "#FC4E07")) +
-  coord_sf(xlim = c(-130, -95), ylim = c(30, 52), crs = 4326) +
+  coord_sf(xlim = c(-125, -97), ylim = c(31, 52), crs = 4326) +
   labs(x = '', y = '', fill = 'Type', shape = 'Common garden name') +
   theme_bw()
 p
