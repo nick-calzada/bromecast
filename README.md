@@ -1,7 +1,7 @@
 # bromecast
 Data processing and visualization for landscape genomics project of cheatgrass (*Bromus tectorum*). 
 
-# Directory Stucture
+# Directory Structure
 
 ```txt
 bromecast
