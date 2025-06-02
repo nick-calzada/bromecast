@@ -99,6 +99,6 @@ grid_df <- cbind(as.data.frame(grid_coords), grid_vals) %>%
 #   geom_sf(data = grid_centers_sf, size = 0.2) +
 #   coord_sf(crs = 3035)
 
-# Save
+# Save for export 
 save_path <- here('01_data', 'data', 'bioclim_and_other', 'native_range_bioclim')
 write_csv(grid_df, file = save_path)
