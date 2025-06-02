@@ -93,7 +93,7 @@ distgenDIFF <- dist.gene(Mydata2, method="pairwise")
 invaded_D <- as.matrix(distgenDIFF)
 
 # Visualize genetic distances 
-# hist(distgenDIFF)
 
+# Save for export 
 save_path <- here('01_data', 'data', 'snps','invaded_Z_and_D.RData')
 save(file = save_path, invaded_Z, invaded_D)
