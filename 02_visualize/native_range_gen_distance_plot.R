@@ -112,3 +112,7 @@ p <- ggplot() +
            expand = FALSE)
 
 p
+
+# Save for export 
+save_path <- here('02_visualize', 'native_range_gen_dist_plot.jpg')
+ggsave(filename = save_path, plot = p, dpi = 600)
