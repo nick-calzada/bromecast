@@ -120,3 +120,7 @@ p <- ggplot() +
   theme_bw()
 
 p
+
+# Save for export 
+save_path <- here('02_visualize', 'invaded_range_distance_plot.jpg')
+ggsave(filename = save_path, plot = p, dpi = 600)
