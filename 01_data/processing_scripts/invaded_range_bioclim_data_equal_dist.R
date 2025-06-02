@@ -73,3 +73,7 @@ grid_vals <- raster::extract(stacked, grid_coords, df = TRUE)
 grid_df <- cbind(as.data.frame(grid_coords), grid_vals) %>%
   rename(lon = X, lat = Y) %>%
   dplyr::select(lon, lat, all_of(cov_names))
+
+# Save for export 
+save_path <- here('01_data', 'data', 'bioclim_and_other', 'invaded_range_bioclim_for_pred.csv')
+write_csv(grid_df, save_path)
