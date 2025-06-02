@@ -7,10 +7,10 @@ Data processing and visualization for landscape genomics project of cheatgrass (
 bromecast
 ├── 01_data/                              
 │   ├── bioclim_and_other/                # Bioclimatic and auxiliary data
-│   │   ├── chelsav2/                     # Contains CHELSA V2 climate data. Can be found here: https://chelsa-climate.org/bioclim/
-│   │   ├── 307tips.csv
+│   │   ├── chelsav2/                     # Contains CHELSA V2 climate data which can be found here: https://chelsa-climate.org/bioclim/
+│   │   ├── 307tips.csv                   # Contains SNP matrix mapping column for native range samples. 
 │   │   ├── BRTE_chr_bp.txt               # Chromosome lengths
-│   │   ├── BRTEcg_genotypesCode.csv
+│   │   ├── BRTEcg_genotypesCode.csv    
 │   │   ├── BRTEclim.csv
 │   │   ├── BioclimateOfOrigin_AllGenotypes.csv
 │   │   ├── BromecastSites.csv
@@ -29,6 +29,6 @@ bromecast
 ├── 02_visualize/                         # Scripts for visualizing data
 │   ├── invaded_range_gen_distance_plot.R
 │   ├── native_range_gen_distance_plot.R
-│   ├── plot_location_types.R
-├── README.md                             
+│   └── plot_location_types.R
+└── README.md                             
 ```
