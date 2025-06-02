@@ -100,5 +100,5 @@ grid_df <- cbind(as.data.frame(grid_coords), grid_vals) %>%
 #   coord_sf(crs = 3035)
 
 # Save for export 
-save_path <- here('01_data', 'data', 'bioclim_and_other', 'native_range_bioclim')
+save_path <- here('01_data', 'data', 'bioclim_and_other', 'native_range_bioclim_data.csv')
 write_csv(grid_df, file = save_path)
