@@ -60,6 +60,9 @@ grid_centers_wgs <- st_transform(grid_centers_sf, crs = 4326)
 cov.names <- read_csv(here('01_data', 'data', 'bioclim_and_other', 'BioclimateOfOrigin_AllGenotypes.csv'), show_col_types = FALSE) %>%
   colnames() %>% .[6:24]
 
+# Bioclimatic covariates were gathered from the CHELSA data repository, which can be found here: https://chelsa-climate.org/bioclim/
+# Full variable names and units can be found here: https://chelsa-climate.org/wp-admin/download-page/CHELSA_tech_specification_V2.pdf
+
 # Using raster: 
 # rlist <- lapply(1:19, function(i) {
 #   path <- paste0(here('01_data', 'data', 'bioclim_and_other','chelsav2/GLOBAL/climatologies/2011-2040/GFDL-ESM4/ssp126/bio/CHELSA_bio'),
