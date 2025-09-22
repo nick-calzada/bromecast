@@ -4,6 +4,8 @@ library(raster)
 library(readr)
 library(ggplot2)
 library(viridis)
+library(glue)
+library(terra)
 
 ##
 ## Native Range prediction grid 
@@ -34,32 +36,20 @@ native_sf <- st_as_sf(native_samps, coords = c("x", "y"), crs = 4326)
 native_proj <- st_transform(native_sf, crs = 3035)  
 
 # Set dimensions of grid here:
-num_rows <- 100
-num_cols <- 100
+cell_width_m <- 1e5
+cell_height_m <- 1e5
 
-# Construct grid
+# For naming later 
+cell_width_km <- cell_width_m / 1e3
+cell_height_km <- cell_height_m / 1e3
+
+# Construct grid using projected points (conserving length) 
 grid_centers <- st_make_grid(
   native_proj,
-  n = c(num_cols, num_rows),     # number of cols (x), rows (y)
-  what = "centers"               # return cell centroids
+  cellsize = c(cell_width_m, cell_height_m), # specify cell dimensions 
+  what = "centers"
 )
-grid_centers_sf <- st_sf(geometry = grid_centers)
-st_crs(grid_centers_sf) <- st_crs(native_proj)
 
-# Convert points to sf and transform coordinate reference system (EPSG:3035 is good for Europe)
-native_sf <- st_as_sf(native_samps, coords = c("x", "y"), crs = 4326)
-native_proj <- st_transform(native_sf, crs = 3035)  
-
-# Set dimensions of grid here:
-num_rows <- 100
-num_cols <- 100
-
-# Construct grid
-grid_centers <- st_make_grid(
-  native_proj,
-  n = c(num_cols, num_rows),     # number of cols (x), rows (y)
-  what = "centers"               # return cell centroids
-)
 grid_centers_sf <- st_sf(geometry = grid_centers)
 st_crs(grid_centers_sf) <- st_crs(native_proj)
 
@@ -70,18 +60,30 @@ grid_centers_wgs <- st_transform(grid_centers_sf, crs = 4326)
 cov.names <- read_csv(here('01_data', 'data', 'bioclim_and_other', 'BioclimateOfOrigin_AllGenotypes.csv'), show_col_types = FALSE) %>%
   colnames() %>% .[6:24]
 
+# Using raster: 
+# rlist <- lapply(1:19, function(i) {
+#   path <- paste0(here('01_data', 'data', 'bioclim_and_other','chelsav2/GLOBAL/climatologies/2011-2040/GFDL-ESM4/ssp126/bio/CHELSA_bio'),
+#                  i, "_2011-2040_gfdl-esm4_ssp126_V.2.1.tif")
+#   r <- raster(path)
+#   names(r) <- cov.names[i]
+#   return(r)
+# })
+# stacked <- stack(rlist)
+# grid_vals <- raster::extract(stacked, grid_coords, df = TRUE)
+
+# Using terra: 
 rlist <- lapply(1:19, function(i) {
-  path <- paste0(here('01_data', 'data', 'bioclim_and_other','chelsav2/GLOBAL/climatologies/2011-2040/GFDL-ESM4/ssp126/bio/CHELSA_bio'),
+  path <- paste0(here("01_data/data/bioclim_and_other/chelsav2/GLOBAL/climatologies/2011-2040/GFDL-ESM4/ssp126/bio/CHELSA_bio"),
                  i, "_2011-2040_gfdl-esm4_ssp126_V.2.1.tif")
-  r <- raster(path)
+  r <- rast(path)
   names(r) <- cov.names[i]
   return(r)
 })
-stacked <- stack(rlist)
+stacked <- rast(rlist)
+grid_vals <- terra::extract(stacked, vect(grid_centers_wgs))
 
 # Extract covariate values at each grid center
 grid_coords <- st_coordinates(grid_centers_wgs)
-grid_vals <- raster::extract(stacked, grid_coords, df = TRUE)
 
 # Combine coordinates and bioclim values
 grid_df <- cbind(as.data.frame(grid_coords), grid_vals) %>%
@@ -100,5 +102,6 @@ grid_df <- cbind(as.data.frame(grid_coords), grid_vals) %>%
 #   coord_sf(crs = 3035)
 
 # Save for export 
-save_path <- here('01_data', 'data', 'bioclim_and_other', 'native_range_bioclim_data.csv')
+grid_name <- glue('native_range_bioclim_data_{cell_width_km}x{cell_height_km}_km.csv')
+save_path <- here('01_data', 'data', 'bioclim_and_other', grid_name)
 write_csv(grid_df, save_path)
